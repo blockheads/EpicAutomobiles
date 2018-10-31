@@ -1,13 +1,11 @@
 package Application;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 class SQLBase {
     public static Connection getConnection() throws SQLException {
@@ -18,15 +16,37 @@ class SQLBase {
         // Read the password file
         // should be ~/.pgpass and look like
         //
-        String homeDir = System.getProperty("user.home");
-        System.out.println(homeDir);
+//        String homeDir = System.getProperty("user.home");
+//        System.out.println(homeDir);
+//        String content = null;
+//
+//        try {
+//            content = new Scanner(new File(homeDir, ".pgpass")).useDelimiter("\\Z").next();
+//        } catch (FileNotFoundException e) {
+//            System.err.println("Could not load password file.");
+//            System.exit(1);
+//        }
+
         String content = null;
 
         try {
-            content = new Scanner(new File(homeDir, ".pgpass")).useDelimiter("\\Z").next();
-        } catch (FileNotFoundException e) {
-            System.err.println("Could not load password file.");
-            System.exit(1);
+            File file = new File("password.txt");
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
+            }
+            content = stringBuffer.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(content == null){
+            System.err.println("create password.txt file in root folder...");
+            return null;
         }
 
         String parts[] = content.split(":");
