@@ -33,14 +33,20 @@ public class Commands {
         runSimpleCommand(con,"TestQuery;");
     }
 
-    public static void SalesofBrand(Connection con, String brand){
-        String Query = "SELECT m.name, m.year, COUNT(m.name)" +
-                        "FROM model AS m JOIN vehicle AS v" +
-                        "ON v.carmodel = m.modelID" +
-                        "JOIN sale as s" +
-                        "ON s.vehiclepurchased = v.vin" +
-                        "GROUP BY m.name" +
-                        "WHERE m.brandName =" + brand;
+    /**
+     * Gets the sales of a specific brand name listed by name and year and amount of the
+     * particular models of that brand sold.
+     * @param con
+     * @param brand
+     */
+    public static void salesofBrand(Connection con, String brand){
+        String Query = "SELECT m.name, m.year, COUNT(m.name) " +
+                        "FROM model AS m JOIN vehicle AS v " +
+                        "ON v.carmodel = m.modelID " +
+                        "JOIN sale as s " +
+                        "ON s.vehiclepurchased = v.vin " +
+                        "GROUP BY m.name " +
+                        "WHERE m.brandName = " + brand + ";";
     }
 
     //Displays sales made to a customer with a specified first name last name
@@ -48,8 +54,61 @@ public class Commands {
         String Query = "SELECT * FROM customer AS c " + 
                        "WHERE c.firstName = " + fName +
             " AND c.lastName = " + lName + ";";
+    /**
+     * Gets the sales of a particular model and year, given listed as a count
+     * @param con
+     * @param model
+     * @param year
+     */
+    public static void salesofModel(Connection con, String model, String year){
+        String Query = "SELECT m.name, m.year, COUNT(m.name) " +
+                "FROM model AS m JOIN vehicle AS v " +
+                "ON v.carmodel = m.modelID " +
+                "JOIN sale as s " +
+                "ON s.vehiclepurchased = v.vin " +
+                "GROUP BY m.name " +
+                "WHERE m.name = " + model + " " +
+                "AND m.year = " + year + ";";
     }
 
+    /**
+     * Groups by brands and returns the sales of each brand
+     * @param con
+     */
+    public static void salesofBrands(Connection con){
+        String Query = "SELECT b.brandName, COUNT(m.name) " +
+                "FROM model AS m JOIN vehicle AS v " +
+                "ON v.carmodel = m.modelID " +
+                "JOIN sale as s " +
+                "ON s.vehiclepurchased = v.vin " +
+                "JOIN brand as b " +
+                "ON b.brandName = m.modelBrand " +
+                "GROUP BY b.brandName;";
+
+    }
+
+    /**
+     * Selects dealers with the given vehicle model and year
+     * @param con
+     * @param model
+     * @param year
+     */
+    public static void VehicleLookupDealers(Connection con, String model, String year){
+        String Query = "SELECT d.dealerid, d.Firstname, d.Lastname, COUNT(m.name) " +
+                "FROM model AS m JOIN vehicle AS v " +
+                "ON v.carmodel = m.modelID " +
+//                "JOIN brand as b " +
+//                "ON b.brandName = m.modelBrand " +
+                "JOIN dealer as d " +
+                "ON d.inventoryID = v.inventoryin " +
+                "GROUP BY d.dealerid " +
+                "WHERE m.name = " + model + " " +
+                "AND m.year = " + year +
+                "HAVING COUNT(m.name) > 0;";
+    }
+
+    
+    // Displays sale of a given customer
     public static void salesOfCustomer(Connection con, String fName, String lName) {
         String Query = "WITH customers(firstName, lastName, vehicle) AS (SELECT firstName, lastName, vehicleOwned FROM customer AS c " +
             "WHERE c.firstName = " + fName + " AND c.lastName = " + lName + ") " +
