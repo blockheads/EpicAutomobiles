@@ -55,7 +55,7 @@ class SQLBase {
         String username = parts[2];
         String password = parts[4];
 
-        String url = "jdbc:postgresql://" + host + ":" + port;
+        String url = "jdbc:postgresql://" + host + ":" + port + "/";
         if (schema != null) {
             url += "/?currentSchema=" + schema;
         }

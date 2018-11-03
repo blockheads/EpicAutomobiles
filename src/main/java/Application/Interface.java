@@ -55,7 +55,6 @@ public class Interface {
 
             // here specify your command and link it up in the command file
             case "SampleCommand":
-                Commands.SampleCommand(con,args);
                 break;
 
         }

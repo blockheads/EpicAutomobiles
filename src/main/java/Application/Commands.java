@@ -33,5 +33,15 @@ public class Commands {
         runSimpleCommand(con,"TestQuery;");
     }
 
+    public static void SalesofBrand(Connection con, String brand){
+        String Query = "SELECT m.name, m.year, COUNT(m.name)" +
+                        "FROM model AS m JOIN vehicle AS v" +
+                        "ON v.carmodel = m.modelID" +
+                        "JOIN sale as s" +
+                        "ON s.vehiclepurchased = v.vin" +
+                        "GROUP BY m.name" +
+                        "WHERE m.brandName =" + brand;
+    }
+
 
 }
