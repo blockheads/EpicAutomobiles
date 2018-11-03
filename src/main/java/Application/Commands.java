@@ -43,5 +43,17 @@ public class Commands {
                         "WHERE m.brandName =" + brand;
     }
 
+    //Displays sales made to a customer with a specified first name last name
+    public static void customerLookup(Connection con, String fName, String lName) {
+        String Query = "SELECT * FROM customer AS c " + 
+                       "WHERE c.firstName = " + fName +
+            " AND c.lastName = " + lName + ";";
+    }
 
+    public static void salesOfCustomer(Connection con, String fName, String lName) {
+        String Query = "WITH customers(firstName, lastName, vehicle) AS (SELECT firstName, lastName, vehicleOwned FROM customer AS c " +
+            "WHERE c.firstName = " + fName + " AND c.lastName = " + lName + ") " +
+            "SELECT * FROM customers JOIN sale WHERE customers.vehicle = sale.vehiclePurchased;"
+    }
+    
 }
