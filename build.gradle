@@ -4,7 +4,7 @@ apply plugin: 'application'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-mainClassName = 'edu.cs.rit.mmior.' + (findProperty('mainClass') ?: 'SQLTest')
+mainClassName = 'Application.' + (findProperty('mainClass') ?: 'Main')
 
 repositories {
   mavenCentral()

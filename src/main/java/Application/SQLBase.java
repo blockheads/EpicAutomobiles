@@ -37,7 +37,6 @@ class SQLBase {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuffer.append(line);
-                stringBuffer.append("\n");
             }
             content = stringBuffer.toString();
         } catch (IOException e) {
@@ -49,15 +48,18 @@ class SQLBase {
             return null;
         }
 
+        System.out.println(content);
         String parts[] = content.split(":");
         String host = parts[0];
         String port = parts[1];
         String username = parts[2];
+        System.out.println("username: " + username);
         String password = parts[4];
+        System.out.println("password: " + password);
 
-        String url = "jdbc:postgresql://" + host + ":" + port + "/";
+        String url = "jdbc:postgresql://" + host + ":" + port + "/sft6463";
         if (schema != null) {
-            url += "/?currentSchema=" + schema;
+            url += "?currentSchema=" + schema;
         }
         return DriverManager.getConnection(url, username, password);
     }
