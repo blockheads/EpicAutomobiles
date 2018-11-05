@@ -28,7 +28,7 @@ public class Commands {
         }
     }
 
-    public static void Salesof(Connection con,String[] args){
+    public static void salesOf(Connection con,String[] args){
         String Query = "SELECT ";
         runSimpleCommand(con,"TestQuery;");
     }
@@ -39,7 +39,7 @@ public class Commands {
      * @param con
      * @param brand
      */
-    public static void salesofBrand(Connection con, String brand){
+    public static void salesOfBrand(Connection con, String brand){
         String Query = "SELECT m.name, m.year, COUNT(m.name) " +
                         "FROM model AS m JOIN vehicle AS v " +
                         "ON v.carmodel = m.modelID " +
@@ -51,16 +51,17 @@ public class Commands {
 
     //Displays sales made to a customer with a specified first name last name
     public static void customerLookup(Connection con, String fName, String lName) {
-        String Query = "SELECT * FROM customer AS c " + 
-                       "WHERE c.firstName = " + fName +
-            " AND c.lastName = " + lName + ";";
+        String Query = "SELECT * FROM customer AS c " +
+                "WHERE c.firstName = " + fName +
+                " AND c.lastName = " + lName + ";";
+    }
     /**
      * Gets the sales of a particular model and year, given listed as a count
      * @param con
      * @param model
      * @param year
      */
-    public static void salesofModel(Connection con, String model, String year){
+    public static void salesOfModel(Connection con, String model, String year){
         String Query = "SELECT m.name, m.year, COUNT(m.name) " +
                 "FROM model AS m JOIN vehicle AS v " +
                 "ON v.carmodel = m.modelID " +
@@ -75,7 +76,7 @@ public class Commands {
      * Groups by brands and returns the sales of each brand
      * @param con
      */
-    public static void salesofBrands(Connection con){
+    public static void salesOfBrands(Connection con){
         String Query = "SELECT b.brandName, COUNT(m.name) " +
                 "FROM model AS m JOIN vehicle AS v " +
                 "ON v.carmodel = m.modelID " +
@@ -93,7 +94,7 @@ public class Commands {
      * @param model
      * @param year
      */
-    public static void VehicleLookupDealers(Connection con, String model, String year){
+    public static void vehicleLookupDealers(Connection con, String model, String year){
         String Query = "SELECT d.dealerid, d.Firstname, d.Lastname, COUNT(m.name) " +
                 "FROM model AS m JOIN vehicle AS v " +
                 "ON v.carmodel = m.modelID " +
@@ -112,7 +113,7 @@ public class Commands {
     public static void salesOfCustomer(Connection con, String fName, String lName) {
         String Query = "WITH customers(firstName, lastName, vehicle) AS (SELECT firstName, lastName, vehicleOwned FROM customer AS c " +
             "WHERE c.firstName = " + fName + " AND c.lastName = " + lName + ") " +
-            "SELECT * FROM customers JOIN sale WHERE customers.vehicle = sale.vehiclePurchased;"
+            "SELECT * FROM customers JOIN sale WHERE customers.vehicle = sale.vehiclePurchased;";
     }
     
 }
