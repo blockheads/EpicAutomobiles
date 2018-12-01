@@ -28,11 +28,6 @@ public class Commands {
         }
     }
 
-    public static void salesOf(Connection con,String[] args){
-        String Query = "SELECT ";
-        runSimpleCommand(con,"TestQuery;");
-    }
-
     /**
      * Gets the sales of a specific brand name listed by name and year and amount of the
      * particular models of that brand sold.

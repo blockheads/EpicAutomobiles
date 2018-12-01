@@ -42,5 +42,7 @@ public class Main {
         } catch(Exception e) {
 
         }
+        ui.start();
+
     }
 }

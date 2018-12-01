@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EpicAutomobiles.iml" filepath="$PROJECT_DIR$/EpicAutomobiles.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/EpicAutomobiles_main.iml" filepath="$PROJECT_DIR$/.idea/modules/EpicAutomobiles_main.iml" group="EpicAutomobiles" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/EpicAutomobiles_test.iml" filepath="$PROJECT_DIR$/.idea/modules/EpicAutomobiles_test.iml" group="EpicAutomobiles" />
+    </modules>
+  </component>
+</project>
