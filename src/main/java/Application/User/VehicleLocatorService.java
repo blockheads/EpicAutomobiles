@@ -1,8 +1,16 @@
 package Application.User;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class VehicleLocatorService implements BaseUser {
+    private static final Set<String> commands = new HashSet<>(Arrays.asList(new String[]{
+            "vehicleLookupDealers",
+    }));
+
     @Override
-    public String[] getCommands() {
-        return new String[0];
+    public Set<String> getCommands() {
+        return commands;
     }
 }

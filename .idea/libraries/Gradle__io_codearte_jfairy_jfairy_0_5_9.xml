@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.codearte.jfairy:jfairy:0.5.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.codearte.jfairy/jfairy/0.5.9/2f5a9fb29c89b18207a4a771def05ef0a97c6ba/jfairy-0.5.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.codearte.jfairy/jfairy/0.5.9/e078b1089ea43792a6ec2f9ea730a05838a7dcb7/jfairy-0.5.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
