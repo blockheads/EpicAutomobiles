@@ -4,7 +4,7 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 class SQLBase {
@@ -65,11 +65,11 @@ class SQLBase {
     }
 
     public static ResultSet executeQuery(Connection con, String sql) throws SQLException {
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = con.prepareStatement(sql);
+            rs = stmt.executeQuery();
             stmt.closeOnCompletion();
         } catch (SQLException e) {
             System.err.println("Something went wrong.");
