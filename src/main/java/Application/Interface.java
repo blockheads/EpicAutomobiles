@@ -61,10 +61,10 @@ public class Interface {
                 System.out.println("As your user you can execute the following commands...");
                 System.out.println("Given 'ExampleCommand Arg1: ex_arg_name1 Arg2: ex_arg_name2' -> 'ExampleCommand " +
                         "ex_input1 ex_input2'");
-                System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+                System.out.println("*----------------------------------------------------------------------*\n");
                 for ( String command : user.getCommands()){
                     getHelp(command);
-                    System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+                    System.out.println("*----------------------------------------------------------------------*\n");
                 }
                 break;
             case "salesofbrand":
