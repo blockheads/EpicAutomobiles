@@ -1,2 +1,4 @@
 *~
-password.txt*
+password.txt
+build/classes/*
+.gradle/*
