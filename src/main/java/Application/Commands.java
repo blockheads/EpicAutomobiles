@@ -106,7 +106,13 @@ public class Commands {
     
     // Displays sale of a given customer
     public static void salesOfCustomer(Connection con, String ssn) {
-        String Query = "SELECT * FROM customers JOIN sale WHERE sale.soldto = " + ssn +";";
+        String Query = "SELECT * FROM customer JOIN sale WHERE sale.soldto = "
+                + ssn +";";
+    }
+
+    public static void registerCustomer(Connection con, String ssn, String firstName, String lastName){
+        String Query = "INSERT INTO customer (ssn, firstName, lastName, lastName) " +
+                "VALUES ('" + ssn + "', '" + firstName +"', '" + lastName + "');";
     }
     
 }

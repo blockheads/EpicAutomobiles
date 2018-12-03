@@ -6,7 +6,8 @@ import java.util.Set;
 
 public class Customer implements BaseUser {
     private static final Set<String> commands = new HashSet<>(Arrays.asList(new String[]{
-            "vehicleLookupDealers"
+            "vehicleLookupDealers",
+            "registerCustomer"
     }));
 
     @Override

@@ -92,8 +92,13 @@ public class Interface {
                     Commands.vehicleLookupDealers(con, commandList[1], commandList[2]);
                 }
             case "salesofcustomer":
-                if(handleErrorCases("salesOfCustomer",commandList, 2)) {
-                    Commands.salesOfCustomer(con, commandList[1], commandList[2]);
+                if(handleErrorCases("salesOfCustomer",commandList, 1)) {
+                    Commands.salesOfCustomer(con, commandList[1]);
+                }
+                break;
+            case "registerCustomer":
+                if(handleErrorCases("registerCustomer",commandList, 3)) {
+                    Commands.registerCustomer(con, commandList[1], commandList[2], commandList[3]);
                 }
                 break;
             default:
@@ -201,10 +206,13 @@ public class Interface {
                 System.out.println("Selects dealers with the given vehicle model and year.");
                 break;
             case "salesofcustomer":
-                System.out.println("salesOfCustomer arg1: first name arg2: last name");
+                System.out.println("salesOfCustomer arg1: ssn");
                 System.out.println("Displays sale of a given customer.");
                 break;
-
+            case "registerCustomer":
+                System.out.println("registerCustomer arg1: ssn arg2: firstName arg3: lastName");
+                System.out.println("Registers the current customer so they can purchase vehicles.");
+                break;
         }
 
     }
