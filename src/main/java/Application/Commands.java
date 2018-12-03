@@ -105,10 +105,8 @@ public class Commands {
 
     
     // Displays sale of a given customer
-    public static void salesOfCustomer(Connection con, String fName, String lName) {
-        String Query = "WITH customers(firstName, lastName, vehicle) AS (SELECT firstName, lastName, vehicleOwned FROM customer AS c " +
-            "WHERE c.firstName = " + fName + " AND c.lastName = " + lName + ") " +
-            "SELECT * FROM customers JOIN sale WHERE customers.vehicle = sale.vehiclePurchased;";
+    public static void salesOfCustomer(Connection con, String ssn) {
+        String Query = "SELECT * FROM customers JOIN sale WHERE sale.soldto = " + ssn +";";
     }
     
 }
