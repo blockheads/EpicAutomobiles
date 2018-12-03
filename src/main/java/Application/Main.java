@@ -15,34 +15,20 @@ public class Main {
         Connection con = getConnection("epic_auto");
         Interface ui = new Interface(con);
 
-        PreparedStatement insertBrand = null;
-        PreparedStatement insertCustomer = null;
-        PreparedStatement insertDealer = null;
-        PreparedStatement insertInventory = null;
-        PreparedStatement insertModel = null;
-        PreparedStatement insertSale = null;
-        PreparedStatement insertVehicle = null;
-
-        
         try {
             con.setAutoCommit(false);
 
-            File file = new File("data-gen/brand.csv");
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String st;
-            while ((st = br.readLine()) != null) {
-                String[] parts = st.split(",");
-                for (String a: parts)
-                    System.out.println(a);
+            Initialize.initialize(con);
                 
-                String addBrand = "insert into brand(brandname, country) values" + "(?,?)";
-                insertBrand = con.prepareStatement(addBrand);
-                
-            }
+            
         } catch(Exception e) {
-
+            System.out.println(e.getMessage());
+        } finally {
+            if (con != null) {
+                con.close();
+            }
         }
-        ui.start();
+        //ui.start();
 
     }
 }
