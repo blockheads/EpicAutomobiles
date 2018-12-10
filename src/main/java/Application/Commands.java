@@ -77,6 +77,8 @@ public class Commands {
      * @param model
      * @param year
      */
+
+    //model = 'thatone' year = '2017' has 2 vehicles
     public static void salesOfModel(Connection con, String model, String year){
         String query = "SELECT m.name, m.year, COUNT(m.name) " +
             "FROM model AS m JOIN vehicle AS v " +
@@ -156,10 +158,12 @@ public class Commands {
         System.out.println("...");
     }
 
+
+    // ssn = 149861605 has 2 sales
     
     // Displays sale of a given customer
     public static void salesOfCustomer(Connection con, String ssn) {
-        String Query = "SELECT * FROM customer JOIN sale WHERE sale.soldto = "
+        String Query = "SELECT firstName, lastName, saleid, price, date, vehiclepurchased, soldby  FROM customer JOIN sale ON sale.soldto=customer.ssn WHERE sale.soldto = "
                 + ssn +";";
         System.out.println("SaleID      Price       Date");
         System.out.println("134565      5600.00     7/9/2015");
