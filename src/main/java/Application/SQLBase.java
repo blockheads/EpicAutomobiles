@@ -64,11 +64,9 @@ class SQLBase {
         return DriverManager.getConnection(url, username, password);
     }
 
-    public static ResultSet executeQuery(Connection con, String sql) throws SQLException {
-        PreparedStatement stmt = null;
+    public static ResultSet executeQuery(Connection con, PreparedStatement stmt) throws SQLException {
         ResultSet rs = null;
         try {
-            stmt = con.prepareStatement(sql);
             rs = stmt.executeQuery();
             stmt.closeOnCompletion();
         } catch (SQLException e) {

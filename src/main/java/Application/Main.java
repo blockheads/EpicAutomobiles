@@ -14,9 +14,9 @@ public class Main {
     public static void main(String args[]) throws SQLException {
         Connection con = getConnection("epic_auto");
         Interface ui = new Interface(con);
+        ui.start();
 
         try {
-            con.setAutoCommit(false);
 
             //Initialize.initialize(con);
                 
@@ -28,7 +28,6 @@ public class Main {
                 con.close();
             }
         }
-        ui.start();
 
     }
 }
