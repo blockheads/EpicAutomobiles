@@ -7,12 +7,12 @@ import java.util.*;
 public class Initialize {
     
     public static void initialize(Connection con) {
-        //insert(con, "brand");
-        //insert(con, "customer");
-        //insert(con, "inventory");
-        //insert(con, "dealer");
-        //insert(con, "model");
-        //insert(con, "vehicle");
+        insert(con, "brand");
+        insert(con, "customer");
+        insert(con, "inventory");
+        insert(con, "dealer");
+        insert(con, "model");
+        insert(con, "vehicle");
         insert(con, "sale");
 
     }
@@ -150,16 +150,18 @@ public class Initialize {
                     break;
 
                 case "vehicle":
+                    ctr++;
                     System.out.println("ctr = " + ctr);
                     for (int x = 0; x < numArgs; x++) {
                         if (x == 5) {
                             i.setInt(x+1, Integer.parseInt(parts[x]));
                             continue;
                         }
-                        if ((x == 6) && (ctr%12 == 5)) 
+                        if ((x == 6) && (ctr > 50)) {
                             i.setString(x+1, null);
-                        i.setString(x+1, parts[x]);
-                        ctr++;
+                        }
+                        else
+                            i.setString(x+1, parts[x]);
                     }
                     break;
                 }
