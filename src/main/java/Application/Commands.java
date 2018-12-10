@@ -219,11 +219,11 @@ public class Commands {
                     "ON v.carmodel = m.modelID " +
 //                "JOIN brand as b " +
 //                "ON b.brandName = m.modelBrand " +
-                    "JOIN dealer as d " +
-                    "ON d.inventoryID = v.inventoryin " +
-                    "GROUP BY d.dealerid " +
+                    "JOIN dealer AS d " +
+                    "ON d.dealerinv = v.inventoryin " +
                     "WHERE m.name = (?) " +
                     "AND m.year = (?) " +
+                    "GROUP BY d.dealerid " +
                     "HAVING COUNT(m.name) > 0;");
 
             statement.setString(1,model);
