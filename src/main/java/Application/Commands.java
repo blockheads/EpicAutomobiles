@@ -1,9 +1,8 @@
 package Application;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import static Application.SQLBase.executeQuery;
 
@@ -21,12 +20,12 @@ public class Commands {
         ResultSet rs = null;
 
         try {
-            PreparedStatement statement =  con.prepareStatement("SELECT m.name, m.year, COUNT(m.name) " +
-                    "FROM Model m JOIN Vehicle v " +
+            PreparedStatement statement =  con.prepareStatement("SELECT m.name, m.year, SUM(s.price) " +
+                    "FROM Model AS m JOIN Vehicle AS v " +
                     "ON m.modelID = v.carModel " +
-                    "JOIN Sale s " +
+                    "JOIN Sale AS s " +
                     "ON s.vehiclePurchased = v.vin " +
-                    "WHERE m.brandName = (?) " +
+                    "WHERE m.modelBrand = (?) " +
                     "GROUP BY m.name, m.year;");
 
 
@@ -37,11 +36,11 @@ public class Commands {
 
             rs = executeQuery(con, statement);
 
-            System.out.format("%-15s%-15s%-15s","Name","Year", "Count");
+            System.out.format("%-15s%-15s%-15s","Name","Year", "Sales Totals");
             System.out.println();
 
             while(rs.next()) {
-                System.out.format("%-15s%-15s%-15s", rs.getString(1), rs.getString(2),"null");
+                System.out.format("%-15s%-15s%-15s", rs.getString(1), rs.getString(2), rs.getString(3));
                 System.out.println();
             }
         } catch (SQLException e) {
@@ -54,14 +53,6 @@ public class Commands {
             }
         }
 
-//        ResultSet rs = generateResult(con,query);
-
-
-//        System.out.println("Brand       Name        Year    Amount");
-//        System.out.println("Ford        Ecosport    2005    1432");
-//        System.out.println("Ford        Flex        2010    1326");
-//        System.out.println("Ford        Fiesta_ST   2014    1286");
-//        System.out.println("...");
     }
 
     //Displays sales made to a customer with a specified first name last name
@@ -136,13 +127,14 @@ public class Commands {
             statement.setString(2, year);
 
             rs = executeQuery(con, statement);
+
             System.out.format("%-15s%-15s%-15s\n", "Model", "Year", "Number Sold");
-            
+
             while(rs.next()) {
                 System.out.format("%-15s%-15s%-15s\n", rs.getString(1), rs.getInt(2), rs.getInt(3));
 
             }
-            
+
         } catch (SQLException e) {
             System.err.println("salesOfModel broke");
         } finally {
@@ -168,14 +160,14 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, COUNT(m.name) " +
+            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, s.date, COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
                     "JOIN sale as s " +
                     "ON s.vehiclepurchased = v.vin " +
                     "JOIN brand as b " +
                     "ON b.brandName = m.modelBrand " +
-                    "GROUP BY b.brandName;");
+                    "GROUP BY b.brandName, s.date;");
 
             rs = executeQuery(con, statement);
 
@@ -184,7 +176,90 @@ public class Commands {
             System.out.println();
 
             while(rs.next()) {
-                System.out.format("%-15s%-15s\n", rs.getString(1), rs.getString(2));
+
+                System.out.format("%-15s%-15s%-15s\n", rs.getString(1), rs.getString(2), rs.getString(3));
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
+
+    }
+
+    /**
+     * Sales Of Brands which can be specified a time range
+     * @param con
+     */
+    public static void salesOfBrandsTimerange(Connection con, Date startDate, Date endDate){
+
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, s.date " +
+                    "FROM model AS m JOIN vehicle AS v " +
+                    "ON v.carmodel = m.modelID " +
+                    "JOIN sale as s " +
+                    "ON s.vehiclepurchased = v.vin " +
+                    "JOIN brand as b " +
+                    "ON b.brandName = m.modelBrand " +
+                    "GROUP BY b.brandName, s.date;");
+
+            rs = executeQuery(con, statement);
+
+            Calendar startCal = Calendar.getInstance();
+            startCal.setTime(startDate);
+
+            Calendar endCal = Calendar.getInstance();
+            startCal.setTime(endDate);
+
+            System.out.format("%-15s%-15s","Brand Name","Models");
+            System.out.println();
+
+            class BrandStorage{
+                String brand;
+                int count;
+
+                BrandStorage(String brand, int count){
+                    this.brand = brand;
+                    this.count = count;
+                }
+
+            }
+
+            ArrayList<BrandStorage> brandStorages = new ArrayList<>();
+
+            while(rs.next()) {
+
+                Date date = rs.getDate(2);
+                String brand = rs.getString(1);
+
+
+
+
+                if(!startCal.after(date) || !endCal.before(date)){
+
+                    for(BrandStorage brandStorage: brandStorages){
+                        if(brandStorage.brand.equals( brand )){
+                            brandStorage.count++;
+                        }
+                        break;
+                    }
+
+                    brandStorages.add(new BrandStorage(brand,0));
+
+                }
+
+            }
+            for(BrandStorage brandStorage: brandStorages){
+                System.out.format("%-15s%-15s\n",brandStorage.brand,brandStorage.count);
             }
         } catch (SQLException e) {
             System.err.println("Something went wrong.");
@@ -218,17 +293,17 @@ public class Commands {
                     "ON v.carmodel = m.modelID " +
 //                "JOIN brand as b " +
 //                "ON b.brandName = m.modelBrand " +
-                    "JOIN dealer as d " +
-                    "ON d.inventoryID = v.inventoryin " +
-                    "GROUP BY d.dealerid " +
+                    "JOIN dealer AS d " +
+                    "ON d.dealerinv = v.inventoryin " +
                     "WHERE m.name = (?) " +
                     "AND m.year = (?) " +
+                    "GROUP BY d.dealerid " +
                     "HAVING COUNT(m.name) > 0;");
-
-            rs = executeQuery(con, statement);
 
             statement.setString(1,model);
             statement.setString(2,year);
+
+            rs = executeQuery(con, statement);
 
             System.out.format("%-20s%-20s%-20s%-20s","Dealer ID","First Name", "Last Name", "Vehicles In Stock");
             System.out.println();
@@ -256,26 +331,25 @@ public class Commands {
 
     // Displays sale of a given customer
     public static void salesOfCustomer(Connection con, String ssn) {
-        String Query = "SELECT firstName, lastName, saleid, price, date, vehiclepurchased, soldby  FROM customer JOIN sale ON sale.soldto=customer.ssn WHERE sale.soldto = "
-                + ssn +";";
 
         ResultSet rs = null;
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM customer JOIN sale WHERE sale.soldto = "
+            PreparedStatement statement = con.prepareStatement("SELECT firstName, lastName, saleid, price, date, " +
+                    "vehiclepurchased, soldby  FROM customer JOIN sale ON sale.soldto = customer.ssn WHERE sale.soldto = "
                     + "(?);");
-
-            rs = executeQuery(con, statement);
 
             statement.setString(1,ssn);
 
-            System.out.format("%-20s%-20s%-20s%-20s","Dealer ID","First Name", "Last Name", "Vehicles In Stock");
-            System.out.println();
+            rs = executeQuery(con, statement);
+
+            System.out.format("%-20s%-20s%-20s%-20s%-20s%-25s%-20s\n","First Name", "Last Name", "Sale ID", "Price", "Date", "Vehicle Purchased", "Sold By");
 
             while(rs.next()) {
-                System.out.format("%-20s%-20s%-20s%-20s\n", rs.getString(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4));
+                System.out.format("%-20s%-20s%-20s%-20s%-20s%-25s%-20s\n", rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)
+                ,rs.getString(7));
             }
         } catch (SQLException e) {
             System.err.println("Something went wrong.");
@@ -289,15 +363,40 @@ public class Commands {
             }
         }
 
-        System.out.println("SaleID      Price       Date");
-        System.out.println("134565      5600.00     7/9/2015");
-        System.out.println("...");
-
     }
 
-    public static void registerCustomer(Connection con, String ssn, String firstName, String lastName){
-        String Query = "INSERT INTO customer (ssn, firstName, lastName, lastName) " +
-                "VALUES ('" + ssn + "', '" + firstName +"', '" + lastName + "');";
+    public static void registerCustomer(Connection con, String ssn, String firstName, String lastName, String phoneNumber,
+                                        String gender, int annualIncome, String streetAddress, String city, String zipCode,
+                                        String state){
+
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement("INSERT INTO customer (ssn, firstName, lastName, phone, " +
+                    "gender, annualIncome, streetAddress, city, zipcode, state) " +
+                    "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );");
+
+            statement.setString(1,ssn);
+            statement.setString(2,firstName);
+            statement.setString(3,lastName);
+            statement.setString(4,phoneNumber);
+            statement.setString(5,gender);
+            statement.setInt(6, annualIncome);
+            statement.setString(7, streetAddress);
+            statement.setString(8, city);
+            statement.setString(9, zipCode);
+            statement.setString(10, state);
+
+            statement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        }
+
+
+
         System.out.println("Customer " + firstName + " " + lastName + " successfully registered!");
     }
 
