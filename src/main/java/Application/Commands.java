@@ -75,8 +75,6 @@ public class Commands {
         ResultSet rs = null;
 
         try {
-            System.out.println(con);
-            System.out.println(con.isClosed());
 
             PreparedStatement statement = con.prepareStatement("SELECT * FROM customer WHERE firstName = (?)"+
                     "AND lastName = (?);");
@@ -162,22 +160,42 @@ public class Commands {
      * @param con
      */
     public static void salesOfBrands(Connection con){
-        String Query = "SELECT b.brandName, COUNT(m.name) " +
-                "FROM model AS m JOIN vehicle AS v " +
-                "ON v.carmodel = m.modelID " +
-                "JOIN sale as s " +
-                "ON s.vehiclepurchased = v.vin " +
-                "JOIN brand as b " +
-                "ON b.brandName = m.modelBrand " +
-                "GROUP BY b.brandName;";
 
 
+        ResultSet rs = null;
 
-        System.out.println("Brand       Amount");
-        System.out.println("Ford        35643");
-        System.out.println("Toyota      32982");
-        System.out.println("Chevrolet   23789");
-        System.out.println("...");
+        try {
+
+            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, COUNT(m.name) " +
+                    "FROM model AS m JOIN vehicle AS v " +
+                    "ON v.carmodel = m.modelID " +
+                    "JOIN sale as s " +
+                    "ON s.vehiclepurchased = v.vin " +
+                    "JOIN brand as b " +
+                    "ON b.brandName = m.modelBrand " +
+                    "GROUP BY b.brandName;");
+
+            rs = executeQuery(con, statement);
+
+
+            System.out.format("%-15s%-15s","Brand Name","Models");
+            System.out.println();
+
+            while(rs.next()) {
+                System.out.format("%-15s%-15s\n", rs.getString(1), rs.getString(2));
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
+
     }
 
     /**
@@ -187,28 +205,84 @@ public class Commands {
      * @param year
      */
     public static void vehicleLookupDealers(Connection con, String model, String year){
-        String Query = "SELECT d.dealerid, d.Firstname, d.Lastname, COUNT(m.name) " +
-                "FROM model AS m JOIN vehicle AS v " +
-                "ON v.carmodel = m.modelID " +
+
+
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement("SELECT d.dealerid, d.Firstname, d.Lastname, COUNT(m.name) " +
+                    "FROM model AS m JOIN vehicle AS v " +
+                    "ON v.carmodel = m.modelID " +
 //                "JOIN brand as b " +
 //                "ON b.brandName = m.modelBrand " +
-                "JOIN dealer as d " +
-                "ON d.inventoryID = v.inventoryin " +
-                "GROUP BY d.dealerid " +
-                "WHERE m.name = " + model + " " +
-                "AND m.year = " + year +
-                "HAVING COUNT(m.name) > 0;";
-        System.out.println("Name                Location        Count");
-        System.out.println("FordDealership1     NewYork NY      1");
-        System.out.println("FordDealership5     Los Angeles CA  3");
-        System.out.println("...");
+                    "JOIN dealer as d " +
+                    "ON d.inventoryID = v.inventoryin " +
+                    "GROUP BY d.dealerid " +
+                    "WHERE m.name = (?) " +
+                    "AND m.year = (?) " +
+                    "HAVING COUNT(m.name) > 0;");
+
+            rs = executeQuery(con, statement);
+
+            statement.setString(1,model);
+            statement.setString(2,year);
+
+            System.out.format("%-20s%-20s%-20s%-20s","Dealer ID","First Name", "Last Name", "Vehicles In Stock");
+            System.out.println();
+
+            while(rs.next()) {
+                System.out.format("%-20s%-20s%-20s%-20s\n", rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4));
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
+
     }
 
     
     // Displays sale of a given customer
     public static void salesOfCustomer(Connection con, String ssn) {
-        String Query = "SELECT * FROM customer JOIN sale WHERE sale.soldto = "
-                + ssn +";";
+
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM customer JOIN sale WHERE sale.soldto = "
+                    + "(?);");
+
+            rs = executeQuery(con, statement);
+
+            statement.setString(1,ssn);
+
+            System.out.format("%-20s%-20s%-20s%-20s","Dealer ID","First Name", "Last Name", "Vehicles In Stock");
+            System.out.println();
+
+            while(rs.next()) {
+                System.out.format("%-20s%-20s%-20s%-20s\n", rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4));
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
+
         System.out.println("SaleID      Price       Date");
         System.out.println("134565      5600.00     7/9/2015");
         System.out.println("...");
