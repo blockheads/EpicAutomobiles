@@ -4,6 +4,7 @@ package Application;
 import Application.User.*;
 
 import java.sql.Connection;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
@@ -99,8 +100,42 @@ public class Interface {
                 }
                 break;
             case "registercustomer":
-                if(handleErrorCases("registerCustomer",commandList, 3)) {
-                    Commands.registerCustomer(con, args[0], args[1], args[2]);
+                if(handleErrorCases("registerCustomer",commandList, 0)) {
+                    System.out.println("Registering customer...");
+                    boolean done = false;
+
+                    System.out.print("SSN: ");
+                    String ssn = scanner.nextLine();
+
+                    System.out.print("First Name: ");
+                    String firstName = scanner.nextLine();
+
+                    System.out.print("Last Name: ");
+                    String lastName = scanner.nextLine();
+
+                    System.out.print("Phone Number: ");
+                    String phoneNumber = scanner.nextLine();
+
+                    System.out.print("Gender: ");
+                    String gender = scanner.nextLine();
+
+                    System.out.print("Annual Income: ");
+                    int annualIncome = Integer.parseInt( scanner.nextLine());
+
+                    System.out.print("Street Address: ");
+                    String streetAddress = scanner.nextLine();
+
+                    System.out.print("City: ");
+                    String city = scanner.nextLine();
+
+                    System.out.print("Zip Code: ");
+                    String zipCode = scanner.nextLine();
+
+                    System.out.print("State: ");
+                    String state = scanner.nextLine();
+
+                    Commands.registerCustomer(con, ssn, firstName, lastName, phoneNumber, gender, annualIncome,
+                            streetAddress, city, zipCode, state);
                 }
                 break;
             case "addvehicle":
