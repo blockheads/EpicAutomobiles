@@ -1,9 +1,8 @@
 package Application;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import static Application.SQLBase.executeQuery;
 
@@ -161,14 +160,14 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, COUNT(m.name) " +
+            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, s.date, COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
                     "JOIN sale as s " +
                     "ON s.vehiclepurchased = v.vin " +
                     "JOIN brand as b " +
                     "ON b.brandName = m.modelBrand " +
-                    "GROUP BY b.brandName;");
+                    "GROUP BY b.brandName, s.date;");
 
             rs = executeQuery(con, statement);
 
@@ -177,7 +176,90 @@ public class Commands {
             System.out.println();
 
             while(rs.next()) {
-                System.out.format("%-15s%-15s\n", rs.getString(1), rs.getString(2));
+
+                System.out.format("%-15s%-15s%-15s\n", rs.getString(1), rs.getString(2), rs.getString(3));
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
+
+    }
+
+    /**
+     * Sales Of Brands which can be specified a time range
+     * @param con
+     */
+    public static void salesOfBrandsTimerange(Connection con, Date startDate, Date endDate){
+
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, s.date " +
+                    "FROM model AS m JOIN vehicle AS v " +
+                    "ON v.carmodel = m.modelID " +
+                    "JOIN sale as s " +
+                    "ON s.vehiclepurchased = v.vin " +
+                    "JOIN brand as b " +
+                    "ON b.brandName = m.modelBrand " +
+                    "GROUP BY b.brandName, s.date;");
+
+            rs = executeQuery(con, statement);
+
+            Calendar startCal = Calendar.getInstance();
+            startCal.setTime(startDate);
+
+            Calendar endCal = Calendar.getInstance();
+            startCal.setTime(endDate);
+
+            System.out.format("%-15s%-15s","Brand Name","Models");
+            System.out.println();
+
+            class BrandStorage{
+                String brand;
+                int count;
+
+                BrandStorage(String brand, int count){
+                    this.brand = brand;
+                    this.count = count;
+                }
+
+            }
+
+            ArrayList<BrandStorage> brandStorages = new ArrayList<>();
+
+            while(rs.next()) {
+
+                Date date = rs.getDate(2);
+                String brand = rs.getString(1);
+
+
+
+
+                if(!startCal.after(date) || !endCal.before(date)){
+
+                    for(BrandStorage brandStorage: brandStorages){
+                        if(brandStorage.brand.equals( brand )){
+                            brandStorage.count++;
+                        }
+                        break;
+                    }
+
+                    brandStorages.add(new BrandStorage(brand,0));
+
+                }
+
+            }
+            for(BrandStorage brandStorage: brandStorages){
+                System.out.format("%-15s%-15s\n",brandStorage.brand,brandStorage.count);
             }
         } catch (SQLException e) {
             System.err.println("Something went wrong.");
