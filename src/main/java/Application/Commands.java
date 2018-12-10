@@ -21,12 +21,12 @@ public class Commands {
         ResultSet rs = null;
 
         try {
-            PreparedStatement statement =  con.prepareStatement("SELECT m.name, m.year, COUNT(m.name) " +
-                    "FROM Model m JOIN Vehicle v " +
+            PreparedStatement statement =  con.prepareStatement("SELECT m.name, m.year, SUM(s.price) " +
+                    "FROM Model AS m JOIN Vehicle AS v " +
                     "ON m.modelID = v.carModel " +
-                    "JOIN Sale s " +
+                    "JOIN Sale AS s " +
                     "ON s.vehiclePurchased = v.vin " +
-                    "WHERE m.brandName = (?) " +
+                    "WHERE m.modelBrand = (?) " +
                     "GROUP BY m.name, m.year;");
 
 
@@ -37,11 +37,11 @@ public class Commands {
 
             rs = executeQuery(con, statement);
 
-            System.out.format("%-15s%-15s%-15s","Name","Year", "Count");
+            System.out.format("%-15s%-15s%-15s","Name","Year", "Sales Totals");
             System.out.println();
 
             while(rs.next()) {
-                System.out.format("%-15s%-15s%-15s", rs.getString(1), rs.getString(2),"null");
+                System.out.format("%-15s%-15s%-15s", rs.getString(1), rs.getString(2), rs.getString(3));
                 System.out.println();
             }
         } catch (SQLException e) {
