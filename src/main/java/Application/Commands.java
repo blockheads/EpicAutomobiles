@@ -54,14 +54,6 @@ public class Commands {
             }
         }
 
-//        ResultSet rs = generateResult(con,query);
-
-
-//        System.out.println("Brand       Name        Year    Amount");
-//        System.out.println("Ford        Ecosport    2005    1432");
-//        System.out.println("Ford        Flex        2010    1326");
-//        System.out.println("Ford        Fiesta_ST   2014    1286");
-//        System.out.println("...");
     }
 
     //Displays sales made to a customer with a specified first name last name
@@ -291,9 +283,38 @@ public class Commands {
 
     }
 
-    public static void registerCustomer(Connection con, String ssn, String firstName, String lastName){
-        String Query = "INSERT INTO customer (ssn, firstName, lastName, lastName) " +
-                "VALUES ('" + ssn + "', '" + firstName +"', '" + lastName + "');";
+    public static void registerCustomer(Connection con, String ssn, String firstName, String lastName, String phoneNumber,
+                                        String gender, int annualIncome, String streetAddress, String city, String zipCode,
+                                        String state){
+
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement("INSERT INTO customer (ssn, firstName, lastName, phone, " +
+                    "gender, annualIncome, streetAddress, city, zipcode, state) " +
+                    "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );");
+
+            statement.setString(1,ssn);
+            statement.setString(2,firstName);
+            statement.setString(3,lastName);
+            statement.setString(4,phoneNumber);
+            statement.setString(5,gender);
+            statement.setInt(6, annualIncome);
+            statement.setString(7, streetAddress);
+            statement.setString(8, city);
+            statement.setString(9, zipCode);
+            statement.setString(10, state);
+
+            statement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        }
+
+
+
         System.out.println("Customer " + firstName + " " + lastName + " successfully registered!");
     }
 
