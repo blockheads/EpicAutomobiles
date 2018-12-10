@@ -136,6 +136,7 @@ public class Commands {
             statement.setString(2, year);
 
             rs = executeQuery(con, statement);
+
             System.out.format("%-15s%-15s%-15s\n", "Model", "Year", "Number Sold");
             
             while(rs.next()) {
@@ -225,10 +226,10 @@ public class Commands {
                     "AND m.year = (?) " +
                     "HAVING COUNT(m.name) > 0;");
 
-            rs = executeQuery(con, statement);
-
             statement.setString(1,model);
             statement.setString(2,year);
+
+            rs = executeQuery(con, statement);
 
             System.out.format("%-20s%-20s%-20s%-20s","Dealer ID","First Name", "Last Name", "Vehicles In Stock");
             System.out.println();
@@ -256,26 +257,25 @@ public class Commands {
 
     // Displays sale of a given customer
     public static void salesOfCustomer(Connection con, String ssn) {
-        String Query = "SELECT firstName, lastName, saleid, price, date, vehiclepurchased, soldby  FROM customer JOIN sale ON sale.soldto=customer.ssn WHERE sale.soldto = "
-                + ssn +";";
 
         ResultSet rs = null;
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM customer JOIN sale WHERE sale.soldto = "
+            PreparedStatement statement = con.prepareStatement("SELECT firstName, lastName, saleid, price, date, " +
+                    "vehiclepurchased, soldby  FROM customer JOIN sale ON sale.soldto = customer.ssn WHERE sale.soldto = "
                     + "(?);");
-
-            rs = executeQuery(con, statement);
 
             statement.setString(1,ssn);
 
-            System.out.format("%-20s%-20s%-20s%-20s","Dealer ID","First Name", "Last Name", "Vehicles In Stock");
-            System.out.println();
+            rs = executeQuery(con, statement);
+
+            System.out.format("%-20s%-20s%-20s%-20s%-20s%-25s%-20s\n","First Name", "Last Name", "Sale ID", "Price", "Date", "Vehicle Purchased", "Sold By");
 
             while(rs.next()) {
-                System.out.format("%-20s%-20s%-20s%-20s\n", rs.getString(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4));
+                System.out.format("%-20s%-20s%-20s%-20s%-20s%-25s%-20s\n", rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)
+                ,rs.getString(7));
             }
         } catch (SQLException e) {
             System.err.println("Something went wrong.");
@@ -288,10 +288,6 @@ public class Commands {
                 System.err.println("Something went REALLY wrong.");
             }
         }
-
-        System.out.println("SaleID      Price       Date");
-        System.out.println("134565      5600.00     7/9/2015");
-        System.out.println("...");
 
     }
 
