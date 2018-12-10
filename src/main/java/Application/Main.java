@@ -28,7 +28,7 @@ public class Main {
                 con.close();
             }
         }
-        //ui.start();
+        ui.start();
 
     }
 }

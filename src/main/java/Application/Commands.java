@@ -78,14 +78,34 @@ public class Commands {
      * @param year
      */
     public static void salesOfModel(Connection con, String model, String year){
-        String Query = "SELECT m.name, m.year, COUNT(m.name) " +
-                "FROM model AS m JOIN vehicle AS v " +
-                "ON v.carmodel = m.modelID " +
-                "JOIN sale as s " +
-                "ON s.vehiclepurchased = v.vin " +
-                "GROUP BY m.name " +
-                "WHERE m.name = " + model + " " +
-                "AND m.year = " + year + ";";
+        String query = "SELECT m.name, m.year, COUNT(m.name) " +
+            "FROM model AS m JOIN vehicle AS v " +
+            "ON v.carmodel = m.modelid " +
+            "JOIN sale as s " +
+            "ON s.vehiclepurchased = v.vin " +
+            "WHERE m.name = '" + model + "' " +
+            "AND m.year = " + year + " " + 
+            "GROUP BY m.name, m.year;";
+
+        ResultSet rs = null;
+        try {
+            rs = executeQuery(con, query);
+            System.out.format("%-15s%-15s%-15s\n", "Model", "Year", "Number Sold");
+            
+            while(rs.next()) {
+                System.out.format("%-15s%-15s%-15s\n", rs.getString(1), rs.getInt(2), rs.getInt(3));
+
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("salesOfModel broke");
+        } finally {
+            try {
+                if (rs != null) { rs.close(); }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
 
         System.out.println("Brand       Name        Year    Amount");
         System.out.println("Ford        Ecosport    2005    1432");
