@@ -82,7 +82,7 @@ public class Interface {
                 break;
             case "salesofmodel":
                 if(handleErrorCases("salesOfModel",args, 2)) {
-                    Commands.salesOfModel(con, args[0], args[1]);
+                    Commands.salesOfModel(con, args[0], Integer.parseInt(args[1]));
                 }
                 break;
             case "salesofbrands":
