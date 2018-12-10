@@ -115,6 +115,8 @@ public class Commands {
      * @param model
      * @param year
      */
+
+    //model = 'thatone' year = '2017' has 2 vehicles
     public static void salesOfModel(Connection con, String model, String year){
 
 
@@ -249,9 +251,13 @@ public class Commands {
 
     }
 
-    
+
+    // ssn = 149861605 has 2 sales
+
     // Displays sale of a given customer
     public static void salesOfCustomer(Connection con, String ssn) {
+        String Query = "SELECT firstName, lastName, saleid, price, date, vehiclepurchased, soldby  FROM customer JOIN sale ON sale.soldto=customer.ssn WHERE sale.soldto = "
+                + ssn +";";
 
         ResultSet rs = null;
 
