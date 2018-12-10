@@ -1,6 +1,7 @@
 package Application;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -16,13 +17,42 @@ public class Commands {
      * @param brand
      */
     public static void salesOfBrand(Connection con, String brand) {
-        String query = "SELECT m.name, m.year, COUNT(m.name) " +
-                        "FROM model AS m JOIN vehicle AS v " +
-                        "ON v.carmodel = m.modelID " +
-                        "JOIN sale as s " +
-                        "ON s.vehiclepurchased = v.vin " +
-                        "GROUP BY m.name " +
-                        "WHERE m.brandName = " + brand + ";";
+
+        ResultSet rs = null;
+
+        try {
+            PreparedStatement statement =  con.prepareStatement("SELECT m.name, m.year, COUNT(m.name) " +
+                    "FROM Model m JOIN Vehicle v " +
+                    "ON m.modelID = v.carModel " +
+                    "JOIN Sale s " +
+                    "ON s.vehiclePurchased = v.vin " +
+                    "WHERE m.brandName = (?) " +
+                    "GROUP BY m.name, m.year;");
+
+
+            statement.setString(1,brand);
+
+            //String query = "Select * FROM brand";
+
+
+            rs = executeQuery(con, statement);
+
+            System.out.format("%-15s%-15s%-15s","Name","Year", "Count");
+            System.out.println();
+
+            while(rs.next()) {
+                System.out.format("%-15s%-15s%-15s", rs.getString(1), rs.getString(2),"null");
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        } finally {
+            try {
+                if (rs != null) { rs.close(); }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
 
 //        ResultSet rs = generateResult(con,query);
 
@@ -42,13 +72,20 @@ public class Commands {
         fName = fName.substring(0, 1).toUpperCase() + fName.substring(1);
         lName = lName.substring(0, 1).toUpperCase() + lName.substring(1);
 
-        String query = "SELECT * FROM customer WHERE firstName = '" + fName + "'"+
-                        "AND lastName = '" + lName + "';";
-
         ResultSet rs = null;
 
         try {
-            rs = executeQuery(con, query);
+            System.out.println(con);
+            System.out.println(con.isClosed());
+
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM customer WHERE firstName = (?)"+
+                    "AND lastName = (?);");
+
+            statement.setString(1, fName);
+            statement.setString(2, lName);
+
+            rs = executeQuery(con, statement);
+
 
             System.out.format("%-15s%-15s%-15s%-10s%-10s%-30s%-20s%-10s%-10s%-15s","SSN","First Name", "Last Name", "Gender", "Income",
                     "Street Address", "City", "Zip Code", "State", "Phone" );
@@ -64,7 +101,10 @@ public class Commands {
             System.err.println("Something went wrong.");
         } finally {
             try {
-                if (rs != null) { rs.close(); }
+                if (rs != null) {
+
+                    rs.close();
+                }
             } catch (SQLException e) {
                 System.err.println("Something went REALLY wrong.");
             }
@@ -78,18 +118,24 @@ public class Commands {
      * @param year
      */
     public static void salesOfModel(Connection con, String model, String year){
-        String query = "SELECT m.name, m.year, COUNT(m.name) " +
-            "FROM model AS m JOIN vehicle AS v " +
-            "ON v.carmodel = m.modelid " +
-            "JOIN sale as s " +
-            "ON s.vehiclepurchased = v.vin " +
-            "WHERE m.name = '" + model + "' " +
-            "AND m.year = " + year + " " + 
-            "GROUP BY m.name, m.year;";
+
 
         ResultSet rs = null;
         try {
-            rs = executeQuery(con, query);
+
+            PreparedStatement statement = con.prepareStatement("SELECT m.name, m.year, COUNT(m.name) " +
+                    "FROM model AS m JOIN vehicle AS v " +
+                    "ON v.carmodel = m.modelid " +
+                    "JOIN sale as s " +
+                    "ON s.vehiclepurchased = v.vin " +
+                    "WHERE m.name = (?) " +
+                    "AND m.year = (?) " +
+                    "GROUP BY m.name, m.year;");
+
+            statement.setString(1, model);
+            statement.setString(2, year);
+
+            rs = executeQuery(con, statement);
             System.out.format("%-15s%-15s%-15s\n", "Model", "Year", "Number Sold");
             
             while(rs.next()) {
@@ -124,6 +170,8 @@ public class Commands {
                 "JOIN brand as b " +
                 "ON b.brandName = m.modelBrand " +
                 "GROUP BY b.brandName;";
+
+
 
         System.out.println("Brand       Amount");
         System.out.println("Ford        35643");
