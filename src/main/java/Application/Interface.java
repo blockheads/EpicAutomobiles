@@ -36,9 +36,9 @@ public class Interface {
     }
 
     public void command(){
-        System.out.println("Please Enter in a command... ( Type Help for a list of commands, quit to leave )");
+        System.out.println("Please Enter in a command... ( Type help for a list of commands, quit to leave )");
         System.out.println("Syntax 'CommandName Arg1 Arg2 ... Argn'");
-        String input = scanner.next();
+        String input = scanner.nextLine();
         if(input.equals("quit")){
             running = false;
             System.out.println("Goodbye, thank you for running our service!");
@@ -54,6 +54,8 @@ public class Interface {
 
         commandList[0] = commandList[0].toLowerCase();
 
+        System.out.println(commandList[0]);
+
         switch (commandList[0]){
             // here specify your command and link it up in the command file
             // the cases are lower case so we allow for the command to be entered in with any upercase/lowercase...
@@ -68,37 +70,47 @@ public class Interface {
                 }
                 break;
             case "salesofbrand":
-                if(handleErrorCases("salesOfBrand",commandList, 1)) {
-                    Commands.salesOfBrand(con, commandList[1]);
+                if(handleErrorCases("salesOfBrand",args, 1)) {
+                    Commands.salesOfBrand(con, args[0]);
                 }
                 break;
             case "customerlookup":
-                if(handleErrorCases("customerLookup",commandList, 2)) {
-                    Commands.customerLookup(con, commandList[1], commandList[2]);
+                if(handleErrorCases("customerLookup",args, 2)) {
+                    Commands.customerLookup(con, args[0], args[1]);
                 }
                 break;
             case "salesofmodel":
-                if(handleErrorCases("salesOfModel",commandList, 2)) {
-                    Commands.salesOfModel(con, commandList[1], commandList[2]);
+                if(handleErrorCases("salesOfModel",args, 2)) {
+                    Commands.salesOfModel(con, args[0], args[1]);
                 }
                 break;
             case "salesofbrands":
-                if(handleErrorCases("salesOfBrands",commandList, 0)) {
+                if(handleErrorCases("salesOfBrands",args, 0)) {
                     Commands.salesOfBrands(con);
                 }
                 break;
             case "vehiclelookupdealers":
-                if(handleErrorCases("vehicleLookupDealers",commandList, 2)) {
-                    Commands.vehicleLookupDealers(con, commandList[1], commandList[2]);
+                if(handleErrorCases("vehicleLookupDealers",args, 2)) {
+                    Commands.vehicleLookupDealers(con, args[0], args[1]);
                 }
             case "salesofcustomer":
-                if(handleErrorCases("salesOfCustomer",commandList, 1)) {
-                    Commands.salesOfCustomer(con, commandList[1]);
+                if(handleErrorCases("salesOfCustomer",args, 1)) {
+                    Commands.salesOfCustomer(con, args[0]);
                 }
                 break;
-            case "registerCustomer":
+            case "registercustomer":
                 if(handleErrorCases("registerCustomer",commandList, 3)) {
-                    Commands.registerCustomer(con, commandList[1], commandList[2], commandList[3]);
+                    Commands.registerCustomer(con, args[0], args[1], args[2]);
+                }
+                break;
+            case "addvehicle":
+                if(handleErrorCases("addVehicle",commandList, 1)) {
+                    Commands.addVehicle(con, args[0], null, null,null,null,null);
+                }
+                break;
+            case "purchasevehicle":
+                if(handleErrorCases("purchaseVehicle",commandList, 2)) {
+                    Commands.purchaseVehicle(con, args[0], args[1]);
                 }
                 break;
             default:
@@ -167,8 +179,8 @@ public class Interface {
             return false;
         }
 
-        if (commandList.length < args + 1){
-            System.out.println("Invalid length of command, command requires at-least 2 arguments.");
+        if (commandList.length < args){
+            System.out.println("Invalid length of command, command requires at-least " + args + " arguments.");
             return false;
         }
 
