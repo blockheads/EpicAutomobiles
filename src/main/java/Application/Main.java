@@ -18,7 +18,7 @@ public class Main {
         try {
             con.setAutoCommit(false);
 
-            Initialize.initialize(con);
+            //Initialize.initialize(con);
                 
             
         } catch(Exception e) {

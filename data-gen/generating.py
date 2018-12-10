@@ -88,13 +88,13 @@ def dealer():
     return d
 
 def brand_entry(i):
-    brands = ["b1", "b2", "b3", "b4", "b5", "b6"]
-    countries = ["c1", "c2", "c3", "c4"]
+    brands = ["ford", "toyota", "bmw", "dodge", "tesla", "jeep"]
+    countries = ["usa", "canada", "germany", "china"]
     return [brands[i], countries[random.randrange(len(countries))]]
 
 def model_entry(i):
     ret = [i]
-    models = ["convertible", "m2", "m3", "m4", "m5", "m6", "m7", "m8", "m9", "m10", "m11", "m12", "m13", "m14", "m15"]
+    models = ["convertible", "camry", "fusion", "hatchback", "focus", "prius", "fiesta", "ranger", "sonata", "jetta", "voyager", "wrangler", "thisone", "thatone", "otherone"]
     ret.append(models[random.randrange(15)])
     ret.append(random.randrange(1990,2018))
     ret.append(random.randrange(10,30))
@@ -119,7 +119,7 @@ def transmission():
     return transmissions[random.randrange(len(transmissions))]
 
 def engine():
-    engines = ["e1","e2", "e3", "e4", "e5"]
+    engines = ["type1","type2", "type3", "type4", "type5"]
     return engines[random.randrange(len(engines))]
 
 def price():
@@ -139,12 +139,13 @@ def date():
 
 def main():
 
+    veh = open("vehicle.csv", "w")    
     inv = open("inventory.csv", "w")
     dea = open("dealer.csv", "w")
     sal = open("sale.csv", "w")
     bra = open("brand.csv", "w")
     mod = open("model.csv", "w")
-    veh = open("vehicle.csv", "w")
+
     cus = open("customer.csv", "w")
 
 
@@ -192,7 +193,7 @@ def main():
         vehicle_entry.append(color())
         vehicle_entry.append(transmission())
         vehicle_entry.append(engine())
-        vehicle_entry.append(model_entry(i)[1])
+        vehicle_entry.append(random.randrange(50))
         vehicle_entry.append(random.randrange(10))
         vehicle_entry.append(ssns[random.randrange(50)])
         veh.write(str(vehicle_entry).strip('[]')+"\n")
@@ -219,7 +220,6 @@ def main():
         sale_entry.append(cuss[i])
         sale_entry.append(deas[i])
         sal.write(str(sale_entry).strip('[]')+"\n")
-
         
     
 main()
