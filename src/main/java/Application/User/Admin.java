@@ -12,7 +12,10 @@ public class Admin implements BaseUser{
             "salesOfModel",
             "salesOfBrands",
             "vehicleLookupDealers",
-            "salesOfCustomer"
+            "salesOfCustomer",
+            "addVehicle",
+            "registerCustomer",
+            "purchaseVehicle"
     }));
 
 
