@@ -207,9 +207,8 @@ public class Interface {
         System.out.println("Welcome to Automobile database no.34323, please select your service, simply enter in ");
         System.out.println("the number of the desired service...\n");
         System.out.println("1) Database Administrator");
-        System.out.println("2) Vehicle Locator Service");
-        System.out.println("3) Online Customers");
-        System.out.println("4) Marketing Department");
+        System.out.println("2) Online Customers");
+        System.out.println("3) Marketing Department");
 
         String input = scanner.nextLine();
         if(input.equals("quit")){
@@ -225,21 +224,17 @@ public class Interface {
                 logedIn();
                 break;
             case "2":
-                user = new VehicleLocatorService();
-                logedIn();
-                break;
-            case "3":
                 user = new Customer();
                 System.out.println("Logged in as customer");
                 logedIn();
                 break;
-            case "4":
+            case "3":
                 user = new MarketingDepartment();
                 System.out.println("Logged in as marketing dept");
                 logedIn();
                 break;
             default:
-                System.out.println("Invalid input! Please enter in a number 1-4...");
+                System.out.println("Invalid input! Please enter in a number 1-3...");
 
         }
     }
