@@ -159,7 +159,8 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, COUNT(m.name) " +
+            PreparedStatement statement = con.prepareStatement(
+                    "SELECT b.brandName, COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
                     "JOIN sale as s " +
@@ -205,7 +206,8 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, s.date " +
+            PreparedStatement statement = con.prepareStatement(
+                    "SELECT b.brandName, s.date " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
                     "JOIN sale as s " +
@@ -293,7 +295,8 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, SUM(s.price), COUNT(m.name) " +
+            PreparedStatement statement = con.prepareStatement(
+                    "SELECT b.brandName, SUM(s.price), COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
                     "JOIN sale as s " +
@@ -341,7 +344,8 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT d.dealerid, d.Firstname, d.Lastname, COUNT(m.name) " +
+            PreparedStatement statement = con.prepareStatement(
+                    "SELECT d.dealerid, d.Firstname, d.Lastname, COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
 //                "JOIN brand as b " +
@@ -389,9 +393,11 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT firstName, lastName, saleid, price, date, " +
-                    "vehiclepurchased, soldby  FROM customer JOIN sale ON sale.soldto = customer.ssn WHERE sale.soldto = "
-                    + "(?);");
+            PreparedStatement statement = con.prepareStatement(
+                    "SELECT firstName, lastName, saleid, price, date, " +
+                    "vehiclepurchased, soldby  FROM customer JOIN sale " +
+                    "ON sale.soldto = customer.ssn WHERE sale.soldto = " +
+                    "(?);");
 
             statement.setString(1,ssn);
 
@@ -426,7 +432,8 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("INSERT INTO customer (ssn, firstName, lastName, phone, " +
+            PreparedStatement statement = con.prepareStatement(
+                    "INSERT INTO customer (ssn, firstName, lastName, phone, " +
                     "gender, annualIncome, streetAddress, city, zipcode, state) " +
                     "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );");
 
