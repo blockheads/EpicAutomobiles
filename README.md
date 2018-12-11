@@ -1,18 +1,12 @@
+# Automobile Database
+
 ## Getting started
 
-To execute a simple test program against the `foodmart` dataset, this assumes you have a correctly configured [password file](https://www.postgresql.org/docs/current/static/libpq-pgpass.html) and a schema named `foodmart` which contains the data.
-Simple run `./gradlew run` to execute a query against the data.
-The only dependency required for your own programs is the PostgreSQL java driver.
-If you choose, you can [download the JAR file](http://central.maven.org/maven2/org/postgresql/postgresql/42.2.5/) for use in your own projects, but you can also use a build system like [Gradle](https://gradle.org/) used by this project.
-For generating test data, some programs also make use of the [JFairy](https://www.javadoc.io/doc/io.codearte.jfairy/jfairy/0.5.9) library.
+To execute the program, use `./gradlew run` in the root directory /auto
 
-## Other programs
+Password file is supplied. Please use this supplied password.txt in order to
+login to the database. 
 
-The repository contains several different programs.
-By default the program `SQLTest` is run.
-To run another program, execute `./gradlew -PmainClass=PROGRAM_NAME`.
-
-| Program   | Description                                      |
-|-----------|--------------------------------------------------|
-| `SQLFake` | Populate the `hospital` schema with sample data  |
-| `SQLTest` | Run a simple query against the `foodmart` schema |
+Data should already be in the database to be used. If for some reason it is not,
+uncomment the try block in src/main/java/Application/Main.java and run the program ONCE.
+Every successive run should recomment out the initialize block.
