@@ -148,6 +148,16 @@ public class Interface {
                     Commands.purchaseVehicle(con, args[0], args[1]);
                 }
                 break;
+            case "salesofbrandstimerange":
+                if(handleErrorCases("salesOfBrandsTimerange", commandList, 0 )){
+                    System.out.println("Please enter in the start date ( format \"yyyy-[m]m-[d]d\". The leading zero for mm and dd may also be omitted. ) ");
+                    String startDate = scanner.nextLine();
+
+                    System.out.println("Please enter in the end date ( format \"yyyy-[m]m-[d]d\". The leading zero for mm and dd may also be omitted. ) ");
+                    String endDate = scanner.nextLine();
+
+                    Commands.salesOfBrandsTimerange(con,startDate,endDate);
+                }
             default:
                 if(running) {
                     System.out.println("Invalid Command " + commandList[0] + "!");
@@ -260,6 +270,10 @@ public class Interface {
                 System.out.println("registerCustomer arg1: ssn arg2: firstName arg3: lastName");
                 System.out.println("Registers the current customer so they can purchase vehicles.");
                 break;
+            case "salesOfBrandsTimerange":
+                System.out.println("salesOfBrandsTimerange");
+                System.out.println("Retieves the sales of brands over a specifc time range.");
+            break;
         }
 
     }

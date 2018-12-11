@@ -3,6 +3,8 @@ package Application;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static Application.SQLBase.executeQuery;
 
@@ -160,14 +162,14 @@ public class Commands {
 
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, s.date, COUNT(m.name) " +
+            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
                     "JOIN sale as s " +
                     "ON s.vehiclepurchased = v.vin " +
                     "JOIN brand as b " +
                     "ON b.brandName = m.modelBrand " +
-                    "GROUP BY b.brandName, s.date;");
+                    "GROUP BY b.brandName;");
 
             rs = executeQuery(con, statement);
 
@@ -177,7 +179,7 @@ public class Commands {
 
             while(rs.next()) {
 
-                System.out.format("%-15s%-15s%-15s\n", rs.getString(1), rs.getString(2), rs.getString(3));
+                System.out.format("%-15s%-15s\n", rs.getString(1), rs.getString(2));
             }
         } catch (SQLException e) {
             System.err.println("Something went wrong.");
@@ -197,9 +199,12 @@ public class Commands {
      * Sales Of Brands which can be specified a time range
      * @param con
      */
-    public static void salesOfBrandsTimerange(Connection con, Date startDate, Date endDate){
+    public static void salesOfBrandsTimerange(Connection con, String startDateString, String endDateString){
 
         ResultSet rs = null;
+
+        Date startDate = Date.valueOf(startDateString);
+        Date endDate = Date.valueOf(endDateString);
 
         try {
 
@@ -223,7 +228,7 @@ public class Commands {
             System.out.format("%-15s%-15s","Brand Name","Models");
             System.out.println();
 
-            class BrandStorage{
+            class BrandStorage implements Comparator<BrandStorage> {
                 String brand;
                 int count;
 
@@ -232,6 +237,12 @@ public class Commands {
                     this.count = count;
                 }
 
+                BrandStorage(){}
+
+                @Override
+                public int compare(BrandStorage o1, BrandStorage o2) {
+                    return o2.count - o1.count;
+                }
             }
 
             ArrayList<BrandStorage> brandStorages = new ArrayList<>();
@@ -241,23 +252,31 @@ public class Commands {
                 Date date = rs.getDate(2);
                 String brand = rs.getString(1);
 
-
-
+                System.out.println(date);
 
                 if(!startCal.after(date) || !endCal.before(date)){
+
+                    System.out.println("Within range");
+
+                    boolean addedBrand = false;
 
                     for(BrandStorage brandStorage: brandStorages){
                         if(brandStorage.brand.equals( brand )){
                             brandStorage.count++;
+                            addedBrand = true;
+                            break;
                         }
-                        break;
+
                     }
-
-                    brandStorages.add(new BrandStorage(brand,0));
-
+                    if(!addedBrand) {
+                        brandStorages.add(new BrandStorage(brand, 1));
+                    }
                 }
 
             }
+
+            brandStorages.sort(new BrandStorage());
+
             for(BrandStorage brandStorage: brandStorages){
                 System.out.format("%-15s%-15s\n",brandStorage.brand,brandStorage.count);
             }
