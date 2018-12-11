@@ -340,8 +340,6 @@ public class Commands {
                     "SELECT d.dealerid, d.Firstname, d.Lastname, COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
-//                "JOIN brand as b " +
-//                "ON b.brandName = m.modelBrand " +
                     "JOIN dealer AS d " +
                     "ON d.dealerinv = v.inventoryin " +
                     "WHERE m.name = (?) " +
@@ -350,7 +348,7 @@ public class Commands {
                     "HAVING COUNT(m.name) > 0;");
 
             statement.setString(1,model);
-            statement.setString(2,year);
+            statement.setInt(2, Integer.parseInt(year));
 
             rs = executeQuery(con, statement);
 
