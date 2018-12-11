@@ -152,9 +152,7 @@ public class Commands {
      * Groups by brands and returns the sales of each brand
      * @param con
      */
-    public static void salesOfBrands(Connection con){
-
-
+    public static void brandsAnalytics(Connection con){
         ResultSet rs = null;
 
         try {

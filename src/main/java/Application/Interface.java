@@ -85,9 +85,9 @@ public class Interface {
                     Commands.salesOfModel(con, args[0], Integer.parseInt(args[1]));
                 }
                 break;
-            case "salesofbrands":
-                if(handleErrorCases("salesOfBrands",args, 0)) {
-                    Commands.salesOfBrands(con);
+            case "brandsAnalytics":
+                if(handleErrorCases("brandsAnalytics",args, 0)) {
+                    Commands.brandsAnalytics(con);
                 }
                 break;
             case "vehiclelookupdealers":
@@ -262,8 +262,8 @@ public class Interface {
                 System.out.println("salesOfModel arg1:model arg2:year");
                 System.out.println("Gets the sales of a particular model and year, given listed as a count.");
                 break;
-            case "salesofbrands":
-                System.out.println("salesOfBrands");
+            case "brandsanalytics":
+                System.out.println("brandAnalytics");
                 System.out.println("Groups by brands and returns the sales of each brand.");
                 break;
             case "vehiclelookupdealers":
