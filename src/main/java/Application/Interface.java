@@ -142,7 +142,6 @@ public class Interface {
                 if(handleErrorCases("addVehicle",commandList, 0)) {
 
                     System.out.println("Registering customer...");
-                    boolean done = false;
 
                     System.out.print("VIN: ");
                     String vin = scanner.nextLine();
@@ -166,11 +165,6 @@ public class Interface {
                     String ownerSSN = scanner.nextLine();
 
                     Commands.addVehicle(con, vin, color, transmission,engine,modelID,inventoryID, ownerSSN);
-                }
-                break;
-            case "purchasevehicle":
-                if(handleErrorCases("purchaseVehicle",commandList, 2)) {
-                    Commands.purchaseVehicle(con, args[0], args[1]);
                 }
                 break;
             case "salesofbrandstimerange":
