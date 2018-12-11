@@ -22,7 +22,8 @@ public class Commands {
         ResultSet rs = null;
 
         try {
-            PreparedStatement statement =  con.prepareStatement("SELECT m.name, m.year, SUM(s.price) " +
+            PreparedStatement statement =  con.prepareStatement(
+                    "SELECT m.name, m.year, COUNT(m.name), SUM(s.price) " +
                     "FROM Model AS m JOIN Vehicle AS v " +
                     "ON m.modelID = v.carModel " +
                     "JOIN Sale AS s " +
@@ -38,11 +39,12 @@ public class Commands {
 
             rs = executeQuery(con, statement);
 
-            System.out.format("%-15s%-15s%-15s","Name","Year", "Sales Totals");
+            System.out.format("%-15s%-15s%-15s","Name","Year", "Amount Sold", "Sales Totals");
             System.out.println();
 
             while(rs.next()) {
-                System.out.format("%-15s%-15s%-15s", rs.getString(1), rs.getString(2), rs.getString(3));
+                System.out.format("%-15s%-15s%-15s", rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4));
                 System.out.println();
             }
         } catch (SQLException e) {
@@ -337,7 +339,8 @@ public class Commands {
         try {
 
             PreparedStatement statement = con.prepareStatement(
-                    "SELECT d.dealerid, d.Firstname, d.Lastname, COUNT(m.name) " +
+                    "SELECT d.dealerid, d.phone, d.Firstname," +
+                    " d.Lastname, COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelID " +
                     "JOIN dealer AS d " +
@@ -352,12 +355,12 @@ public class Commands {
 
             rs = executeQuery(con, statement);
 
-            System.out.format("%-20s%-20s%-20s%-20s","Dealer ID","First Name", "Last Name", "Vehicles In Stock");
+            System.out.format("%-20s%-20s%-20s%-20s%-20s","Dealer ID","Dealer Phone","First Name", "Last Name", "Vehicles In Stock");
             System.out.println();
 
             while(rs.next()) {
-                System.out.format("%-20s%-20s%-20s%-20s\n", rs.getString(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4));
+                System.out.format("%-20s%-20s%-20s%-20s%-20s\n", rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5));
             }
         } catch (SQLException e) {
             System.err.println("Something went wrong.");

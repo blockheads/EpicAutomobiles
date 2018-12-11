@@ -9,7 +9,7 @@ public class MarketingDepartment implements BaseUser{
             "salesOfBrand",
             "customerLookup",
             "salesOfModel",
-            "brandsAnanlytics",
+            "brandsAnalytics",
             "vehicleLookupDealers",
             "salesOfCustomer",
             "registerCustomer",

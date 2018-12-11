@@ -185,7 +185,7 @@ public class Interface {
                     Commands.salesOfBrandsDollarAmount(con);
                 }
                 break;
-            case "SQLQuery":
+            case "sqlquery":
                 if(handleErrorCases("SQLQuery",commandList, 0)) {
                     System.out.println("Please enter in a direct SQL Query. ");
                     String query = scanner.nextLine();
@@ -278,7 +278,7 @@ public class Interface {
                 break;
             case "salesofbrand":
                 System.out.println("salesOfBrand arg1:model arg2:year");
-                System.out.println("Gets the sales of a particular model and year, given listed as a count.");
+                System.out.println("Gets the sales of a particular brand listing the vehicles sold.");
                 break;
             case "customerlookup":
                 System.out.println("customerLookup arg1:firstname arg2:lastname");
@@ -316,7 +316,7 @@ public class Interface {
                 System.out.println("addVehicle");
                 System.out.println("Adds a vehicle to the database with the specified information.");
                 break;
-            case "SQLQuery":
+            case "sqlquery":
                 System.out.println("SQLQuery");
                 System.out.println("Executes a admin level SQL query on the database.");
                 break;
