@@ -66,6 +66,7 @@ public class Interface {
                         "ex_input1 ex_input2'");
                 System.out.println("*----------------------------------------------------------------------*\n");
                 for ( String command : user.getCommands()){
+
                     getHelp(command);
                     System.out.println("*----------------------------------------------------------------------*\n");
                 }
@@ -94,6 +95,7 @@ public class Interface {
                 if(handleErrorCases("vehicleLookupDealers",args, 2)) {
                     Commands.vehicleLookupDealers(con, args[0], args[1]);
                 }
+                break;
             case "salesofcustomer":
                 if(handleErrorCases("salesOfCustomer",args, 1)) {
                     Commands.salesOfCustomer(con, args[0]);
@@ -177,6 +179,7 @@ public class Interface {
 
                     Commands.salesOfBrandsTimerange(con,startDate,endDate);
                 }
+                break;
             case "salesofbrandsdollaramount":
                 if(handleErrorCases("salesOfBrandsDollarAmount",commandList, 0)) {
                     Commands.salesOfBrandsDollarAmount(con);
@@ -186,7 +189,7 @@ public class Interface {
                 if(running) {
                     System.out.println("Invalid Command " + commandList[0] + "!");
                 }
-
+                break;
         }
 
     }
@@ -293,17 +296,22 @@ public class Interface {
                 System.out.println("salesOfCustomer arg1:ssn");
                 System.out.println("Displays sale of a given customer.");
                 break;
-            case "registerCustomer":
+            case "registercustomer":
                 System.out.println("registerCustomer arg1:ssn arg2:firstName arg3:lastName");
                 System.out.println("Registers the current customer so they can purchase vehicles.");
                 break;
-            case "salesOfBrandsTimerange":
+            case "salesofbrandstimerange":
                 System.out.println("salesOfBrandsTimerange");
                 System.out.println("Retieves the sales of brands over a specifc time range.");
-            case "salesOfBrandsDollarAmount":
+                break;
+            case "salesofbrandsdollaramount":
                 System.out.println("salesOfBrandsDollarAmount");
                 System.out.println("Retrieves the sales of brands giving and sorted by total dollar amount sold.");
-            break;
+                break;
+            case "addvehicle":
+                System.out.println("addVehicle");
+                System.out.println("Adds a vehicle to the database with the specified information.");
+                break;
         }
 
     }

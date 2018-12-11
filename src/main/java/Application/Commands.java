@@ -216,12 +216,6 @@ public class Commands {
 
             rs = executeQuery(con, statement);
 
-            Calendar startCal = Calendar.getInstance();
-            startCal.setTime(startDate);
-
-            Calendar endCal = Calendar.getInstance();
-            startCal.setTime(endDate);
-
             System.out.format("%-15s%-15s","Brand Name","Models");
             System.out.println();
 
@@ -249,7 +243,7 @@ public class Commands {
                 Date date = rs.getDate(2);
                 String brand = rs.getString(1);
 
-                if(!startCal.after(date) || !endCal.before(date)){
+                if(!startDate.after(date) && !endDate.before(date)){
 
                     boolean addedBrand = false;
 
