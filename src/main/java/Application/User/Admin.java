@@ -10,13 +10,14 @@ public class Admin implements BaseUser{
             "salesOfBrand",
             "customerLookup",
             "salesOfModel",
-            "salesOfBrands",
+            "brandsAnalytics",
             "vehicleLookupDealers",
             "salesOfCustomer",
             "addVehicle",
             "registerCustomer",
             "salesOfBrandsTimerange",
-            "salesOfBrandsDollarAmount"
+            "salesOfBrandsDollarAmount",
+            "SQLQuery"
     }));
 
 

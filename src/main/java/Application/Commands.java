@@ -483,5 +483,35 @@ public class Commands {
         }
     }
 
+    public static void SQLQuery(Connection con, String query, int outputCols){
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement(query);
+
+            rs = executeQuery(con, statement);
+
+            System.out.println("The query output the following... ");
+
+            while(rs.next()) {
+                for (int i=0; i<outputCols; i++){
+                    System.out.format("%-30s", rs.getString(i));
+                }
+
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
+    }
     
 }

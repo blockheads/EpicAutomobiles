@@ -185,6 +185,15 @@ public class Interface {
                     Commands.salesOfBrandsDollarAmount(con);
                 }
                 break;
+            case "SQLQuery":
+                if(handleErrorCases("SQLQuery",commandList, 0)) {
+                    System.out.println("Please enter in a direct SQL Query. ");
+                    String query = scanner.nextLine();
+                    System.out.println("Please enter the amount of output columns.");
+                    int outputCols = scanner.nextInt();
+                    Commands.SQLQuery(con, query, outputCols);
+                }
+                break;
             default:
                 if(running) {
                     System.out.println("Invalid Command " + commandList[0] + "!");
@@ -311,6 +320,10 @@ public class Interface {
             case "addvehicle":
                 System.out.println("addVehicle");
                 System.out.println("Adds a vehicle to the database with the specified information.");
+                break;
+            case "SQLQuery":
+                System.out.println("SQLQuery");
+                System.out.println("Executes a admin level SQL query on the database.");
                 break;
         }
 
