@@ -109,31 +109,31 @@ public class Commands {
      * @param year
      */
 
-    //model = 'thatone' year = '2017' has 2 vehicles
-    public static void salesOfModel(Connection con, String model, String year){
+    //model = 'thatone' year = '2012' has 2 vehicles
+    public static void salesOfModel(Connection con, String model, int year){
 
 
         ResultSet rs = null;
         try {
 
-            PreparedStatement statement = con.prepareStatement("SELECT m.name, m.year, COUNT(m.name) " +
+            PreparedStatement statement = con.prepareStatement("SELECT m.modelbrand, m.name, m.year, COUNT(m.name) " +
                     "FROM model AS m JOIN vehicle AS v " +
                     "ON v.carmodel = m.modelid " +
                     "JOIN sale as s " +
                     "ON s.vehiclepurchased = v.vin " +
                     "WHERE m.name = (?) " +
                     "AND m.year = (?) " +
-                    "GROUP BY m.name, m.year;");
+                    "GROUP BY m.name, m.year, m.modelbrand;");
 
             statement.setString(1, model);
-            statement.setString(2, year);
+            statement.setInt(2, year);
 
             rs = executeQuery(con, statement);
 
-            System.out.format("%-15s%-15s%-15s\n", "Model", "Year", "Number Sold");
+            System.out.format("%-15s%-15s%-15s%-15s\n", "Brand", "Model", "Year", "Number Sold");
 
             while(rs.next()) {
-                System.out.format("%-15s%-15s%-15s\n", rs.getString(1), rs.getInt(2), rs.getInt(3));
+                System.out.format("%-15s%-15s%-15s%-15s\n", rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4));
 
             }
 
@@ -146,9 +146,6 @@ public class Commands {
                 System.err.println("Something went REALLY wrong.");
             }
         }
-
-        System.out.println("Brand       Name        Year    Amount");
-        System.out.println("Ford        Ecosport    2005    1432");
     }
 
     /**

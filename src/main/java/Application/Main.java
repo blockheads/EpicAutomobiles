@@ -16,9 +16,10 @@ public class Main {
         Interface ui = new Interface(con);
         ui.start();
 
+        /*
         try {
-
-            //Initialize.initialize(con);
+            con.setAutoCommit(false);
+            Initialize.initialize(con);
                 
             
         } catch(Exception e) {
@@ -28,6 +29,6 @@ public class Main {
                 con.close();
             }
         }
-
+        */
     }
 }

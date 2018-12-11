@@ -153,18 +153,18 @@ def main():
         inventory_entry = [i]
         inventory_entry.append(streetAddress())
         inventory_entry.extend(zipCityState())
-        inv.write(str(inventory_entry).strip('[]')+"\n")
+        inv.write(str(inventory_entry).strip('[]')+"\n") 
     
     for i in range(6):
         bra.write(str(brand_entry(i)).strip('[]')+"\n")
  
-    for i in range(50):
+    for i in range(10):
         dealer_entry = [i]
         dealer_entry.append(fName())
         dealer_entry.append(lName())
         dealer_entry.append(phone())
         dealer_entry.append(brand_entry(random.randrange(6))[0])
-        dealer_entry.append(random.randrange(10))
+        dealer_entry.append(i)
         dea.write(str(dealer_entry).strip('[]')+"\n")
 
     for i in range(50):
@@ -187,14 +187,37 @@ def main():
     for line in csv_reader:
         ssns.append(line[0].strip('" ').strip("'"))
     random.shuffle(ssns)
-        
+
+    dea = open("dealer.csv","r")
+    csv_reader = csv.reader(dea, delimiter=',')
+    deas = {}
+    for line in csv_reader:
+        if (line[4].strip("'") in deas):
+            deas[line[4].strip("' ")].append(int(line[0].strip("' ")))
+        else:
+            deas[line[4].strip("' ")] = [int(line[0].strip("' "))]
+    print(deas)
+
+    mod = open("model.csv","r")
+    csv_reader = csv.reader(mod, delimiter=',')
+    mods = {}
+    for line in csv_reader:
+        mods[int(line[0].strip("' "))] = line[5].strip("' ")
+    print(mods)
+
     for i in range(100):
         vehicle_entry = [vin()]
         vehicle_entry.append(color())
         vehicle_entry.append(transmission())
         vehicle_entry.append(engine())
-        vehicle_entry.append(random.randrange(50))
-        vehicle_entry.append(random.randrange(10))
+        asdf = random.randrange(50)
+        modellll = mods[asdf]
+        #model id
+        vehicle_entry.append(asdf)
+        #inv in
+        another = random.randrange(len(deas[modellll]))
+        vehicle_entry.append(deas[modellll][another])
+        #owned by
         vehicle_entry.append(ssns[random.randrange(50)])
         veh.write(str(vehicle_entry).strip('[]')+"\n")
 
@@ -203,9 +226,12 @@ def main():
     csv_reader = csv.reader(veh, delimiter=',')
     cuss = []
     vehs = []
+    vehdic = {}
     for line in csv_reader:
         cuss.append(line[6].strip("' "))
         vehs.append(line[0].strip('" '))
+        vehdic[line[0].strip("' ")] = int(line[5].strip("' "))
+    print(vehdic)
     dea = open("dealer.csv","r")
     csv_reader = csv.reader(dea, delimiter=',')
     deas = []
@@ -216,9 +242,10 @@ def main():
         sale_entry = [i]
         sale_entry.append(price())
         sale_entry.append(date())
-        sale_entry.append(vehs[i].strip("'"))
+        vehicle = vehs[i].strip("'")
+        sale_entry.append(vehicle)
         sale_entry.append(cuss[i])
-        sale_entry.append(deas[i])
+        sale_entry.append(deas[vehdic[vehicle]])
         sal.write(str(sale_entry).strip('[]')+"\n")
         
     

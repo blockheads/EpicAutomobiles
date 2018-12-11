@@ -82,7 +82,7 @@ public class Interface {
                 break;
             case "salesofmodel":
                 if(handleErrorCases("salesOfModel",args, 2)) {
-                    Commands.salesOfModel(con, args[0], args[1]);
+                    Commands.salesOfModel(con, args[0], Integer.parseInt(args[1]));
                 }
                 break;
             case "salesofbrands":
@@ -175,7 +175,7 @@ public class Interface {
         System.out.println("3) Online Customers");
         System.out.println("4) Marketing Department");
 
-        String input = scanner.next();
+        String input = scanner.nextLine();
         if(input.equals("quit")){
             logedOut();
             running = false;
@@ -185,6 +185,7 @@ public class Interface {
 
             case "1":
                 user = new Admin();
+                System.out.println("Logged in as admin");
                 logedIn();
                 break;
             case "2":
@@ -193,10 +194,12 @@ public class Interface {
                 break;
             case "3":
                 user = new Customer();
+                System.out.println("Logged in as customer");
                 logedIn();
                 break;
             case "4":
                 user = new MarketingDepartment();
+                System.out.println("Logged in as marketing dept");
                 logedIn();
                 break;
             default:
@@ -243,15 +246,15 @@ public class Interface {
                 System.out.println("Haha very funny...");
                 break;
             case "salesofbrand":
-                System.out.println("salesOfBrand arg1: model arg2: year");
+                System.out.println("salesOfBrand arg1:model arg2:year");
                 System.out.println("Gets the sales of a particular model and year, given listed as a count.");
                 break;
             case "customerlookup":
-                System.out.println("customerLookup arg1: first name arg2: last name");
+                System.out.println("customerLookup arg1:firstname arg2:lastname");
                 System.out.println("Displays sales made to a customer with a specified first name last name.");
                 break;
             case "salesofmodel":
-                System.out.println("salesOfModel arg1: model arg2: year");
+                System.out.println("salesOfModel arg1:model arg2:year");
                 System.out.println("Gets the sales of a particular model and year, given listed as a count.");
                 break;
             case "salesofbrands":
@@ -259,15 +262,15 @@ public class Interface {
                 System.out.println("Groups by brands and returns the sales of each brand.");
                 break;
             case "vehiclelookupdealers":
-                System.out.println("vehicleLookupDealers arg1: model arg2: year");
+                System.out.println("vehicleLookupDealers arg1:model arg2:year");
                 System.out.println("Selects dealers with the given vehicle model and year.");
                 break;
             case "salesofcustomer":
-                System.out.println("salesOfCustomer arg1: ssn");
+                System.out.println("salesOfCustomer arg1:ssn");
                 System.out.println("Displays sale of a given customer.");
                 break;
             case "registerCustomer":
-                System.out.println("registerCustomer arg1: ssn arg2: firstName arg3: lastName");
+                System.out.println("registerCustomer arg1:ssn arg2:firstName arg3:lastName");
                 System.out.println("Registers the current customer so they can purchase vehicles.");
                 break;
             case "salesOfBrandsTimerange":
