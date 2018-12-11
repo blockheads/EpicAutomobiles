@@ -55,8 +55,6 @@ public class Interface {
 
         commandList[0] = commandList[0].toLowerCase();
 
-        System.out.println(commandList[0]);
-
         switch (commandList[0]){
             // here specify your command and link it up in the command file
             // the cases are lower case so we allow for the command to be entered in with any upercase/lowercase...

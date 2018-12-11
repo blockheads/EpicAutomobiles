@@ -39,11 +39,11 @@ public class Commands {
 
             rs = executeQuery(con, statement);
 
-            System.out.format("%-15s%-15s%-15s","Name","Year", "Amount Sold", "Sales Totals");
+            System.out.format("%-15s%-15s%-15s%-15s","Name","Year", "Amount Sold", "Sales Totals");
             System.out.println();
 
             while(rs.next()) {
-                System.out.format("%-15s%-15s%-15s", rs.getString(1), rs.getString(2),
+                System.out.format("%-15s%-15s%-15s%-15s", rs.getString(1), rs.getString(2),
                         rs.getString(3), rs.getString(4));
                 System.out.println();
             }
@@ -496,7 +496,7 @@ public class Commands {
             System.out.println("The query output the following... ");
 
             while(rs.next()) {
-                for (int i=0; i<outputCols; i++){
+                for (int i=1; i<=outputCols; i++){
                     System.out.format("%-30s", rs.getString(i));
                 }
 
