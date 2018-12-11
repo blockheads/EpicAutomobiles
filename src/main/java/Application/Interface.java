@@ -158,6 +158,11 @@ public class Interface {
 
                     Commands.salesOfBrandsTimerange(con,startDate,endDate);
                 }
+            case "salesofbrandsdollaramount":
+                if(handleErrorCases("salesOfBrandsDollarAmount",commandList, 0)) {
+                    Commands.salesOfBrandsDollarAmount(con);
+                }
+                break;
             default:
                 if(running) {
                     System.out.println("Invalid Command " + commandList[0] + "!");
@@ -276,6 +281,9 @@ public class Interface {
             case "salesOfBrandsTimerange":
                 System.out.println("salesOfBrandsTimerange");
                 System.out.println("Retieves the sales of brands over a specifc time range.");
+            case "salesOfBrandsDollarAmount":
+                System.out.println("salesOfBrandsDollarAmount");
+                System.out.println("Retrieves the sales of brands giving and sorted by total dollar amount sold.");
             break;
         }
 

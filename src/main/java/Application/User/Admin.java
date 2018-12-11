@@ -16,7 +16,8 @@ public class Admin implements BaseUser{
             "addVehicle",
             "registerCustomer",
             "purchaseVehicle",
-            "salesOfBrandsTimerange"
+            "salesOfBrandsTimerange",
+            "salesOfBrandsDollarAmount"
     }));
 
 

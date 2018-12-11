@@ -249,11 +249,7 @@ public class Commands {
                 Date date = rs.getDate(2);
                 String brand = rs.getString(1);
 
-                System.out.println(date);
-
                 if(!startCal.after(date) || !endCal.before(date)){
-
-                    System.out.println("Within range");
 
                     boolean addedBrand = false;
 
@@ -276,6 +272,47 @@ public class Commands {
 
             for(BrandStorage brandStorage: brandStorages){
                 System.out.format("%-15s%-15s\n",brandStorage.brand,brandStorage.count);
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Something went REALLY wrong.");
+            }
+        }
+
+    }
+
+    public static void salesOfBrandsDollarAmount(Connection con){
+
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement("SELECT b.brandName, SUM(s.price), COUNT(m.name) " +
+                    "FROM model AS m JOIN vehicle AS v " +
+                    "ON v.carmodel = m.modelID " +
+                    "JOIN sale as s " +
+                    "ON s.vehiclepurchased = v.vin " +
+                    "JOIN brand as b " +
+                    "ON b.brandName = m.modelBrand " +
+                    "GROUP BY b.brandName " +
+                    "ORDER BY SUM(s.price) DESC;");
+
+            rs = executeQuery(con, statement);
+
+
+            System.out.format("%-15s%-15s%-15s","Brand Name","Total Sales", "Amount");
+            System.out.println();
+
+            while(rs.next()) {
+
+                System.out.format("%-15s%-15s%-15s\n", rs.getString(1), rs.getString(2),
+                        rs.getString(3));
             }
         } catch (SQLException e) {
             System.err.println("Something went wrong.");
