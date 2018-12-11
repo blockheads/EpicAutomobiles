@@ -421,8 +421,6 @@ public class Commands {
                                         String gender, int annualIncome, String streetAddress, String city, String zipCode,
                                         String state){
 
-        ResultSet rs = null;
-
         try {
 
             PreparedStatement statement = con.prepareStatement(
@@ -458,8 +456,6 @@ public class Commands {
      */
     public static void addVehicle(Connection con, String vin, String color, String transmission, String engine,
                                   String modelID, int inventoryID, String ownerSSN){
-
-        ResultSet rs = null;
 
         try {
 
