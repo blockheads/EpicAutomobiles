@@ -461,17 +461,33 @@ public class Commands {
     /**
      * Adds a vehicle to the database with the specified information
      */
-    public static void addVehicle(Connection con, String vin, String color, String transmission, String engine, String modelKey, String inventoryKey){
-        // query for the
-        System.out.println("Vehicle " + vin + " succesfully added to database.");
+    public static void addVehicle(Connection con, String vin, String color, String transmission, String engine,
+                                  String modelID, int inventoryID, String ownerSSN){
+
+        ResultSet rs = null;
+
+        try {
+
+            PreparedStatement statement = con.prepareStatement("INSERT INTO vehicle (vin, color, transmission, engine, " +
+                    "modelID, inventoryID, ownerSSN) " +
+                    "VALUES ( ?, ?, ?, ?, ?, ?, ?);");
+
+            statement.setString(1,vin);
+            statement.setString(2,color);
+            statement.setString(3,transmission);
+            statement.setString(4,engine);
+            statement.setString(5,modelID);
+            statement.setInt(6, inventoryID);
+            statement.setString(7, ownerSSN);
+
+            statement.executeUpdate();
+
+            System.out.println("Vehicle " + vin + " succesfully added to database.");
+
+        } catch (SQLException e) {
+            System.err.println("Something went wrong.");
+        }
     }
 
-    /**
-     * Purchases A vehicle
-     */
-    public static void purchaseVehicle(Connection con, String ssn, String vin){
-        // query for the
-        System.out.println("Vehicle " + vin + " succesfully purchased by " + ssn);
-    }
     
 }

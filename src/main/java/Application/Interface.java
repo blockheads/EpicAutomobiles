@@ -139,13 +139,32 @@ public class Interface {
                 }
                 break;
             case "addvehicle":
-                if(handleErrorCases("addVehicle",commandList, 1)) {
-                    Commands.addVehicle(con, args[0], null, null,null,null,null);
-                }
-                break;
-            case "purchasevehicle":
-                if(handleErrorCases("purchaseVehicle",commandList, 2)) {
-                    Commands.purchaseVehicle(con, args[0], args[1]);
+                if(handleErrorCases("addVehicle",commandList, 0)) {
+
+                    System.out.println("Registering customer...");
+
+                    System.out.print("VIN: ");
+                    String vin = scanner.nextLine();
+
+                    System.out.print("Color: ");
+                    String color = scanner.nextLine();
+
+                    System.out.print("Transmission: ");
+                    String transmission = scanner.nextLine();
+
+                    System.out.print("Engine: ");
+                    String engine = scanner.nextLine();
+
+                    System.out.print("Model ID: ");
+                    String modelID = scanner.nextLine();
+
+                    System.out.print("Inventory ID: ");
+                    int inventoryID = Integer.parseInt( scanner.nextLine());
+
+                    System.out.print("Owner SSN: ");
+                    String ownerSSN = scanner.nextLine();
+
+                    Commands.addVehicle(con, vin, color, transmission,engine,modelID,inventoryID, ownerSSN);
                 }
                 break;
             case "salesofbrandstimerange":
